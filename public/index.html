@@ -2,45 +2,32 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Morpion multijoueur</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background: #f0f0f0;
-    }
-    #status {
-      font-size: 1.5rem;
-      padding: 1rem 2rem;
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    #status.connected { color: green; }
-    #status.disconnected { color: red; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morpion</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="status" class="disconnected">Déconnecté</div>
+  <h1>Morpion</h1>
+
+  <button id="btn-find">Trouver une partie</button>
+
+  <p id="status">Cliquez sur Trouver une partie pour commencer</p>
+
+  <div id="board">
+    <button class="cell" data-index="0"></button>
+    <button class="cell" data-index="1"></button>
+    <button class="cell" data-index="2"></button>
+    <button class="cell" data-index="3"></button>
+    <button class="cell" data-index="4"></button>
+    <button class="cell" data-index="5"></button>
+    <button class="cell" data-index="6"></button>
+    <button class="cell" data-index="7"></button>
+    <button class="cell" data-index="8"></button>
+  </div>
+
+  <button id="btn-replay" style="display:none">Rejouer</button>
 
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io();
-    const statusEl = document.getElementById('status');
-
-    socket.on('connect', () => {
-      statusEl.textContent = 'Connecté';
-      statusEl.className = 'connected';
-    });
-
-    socket.on('disconnect', () => {
-      statusEl.textContent = 'Déconnecté';
-      statusEl.className = 'disconnected';
-    });
-  </script>
+  <script src="client.js"></script>
 </body>
 </html>

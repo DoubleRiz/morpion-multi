@@ -1,0 +1,132 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+}
+
+#status {
+  font-size: 1rem;
+  color: #a0a0b0;
+  min-height: 1.5em;
+  text-align: center;
+}
+
+/* Plateau */
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 6px;
+  background: #2a2a4a;
+  padding: 6px;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background: #16213e;
+  border: 2px solid #3a3a5c;
+  border-radius: 6px;
+  font-size: 2.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+.cell:hover:not(:disabled) {
+  background: #1e2d4a;
+  border-color: #6060a0;
+}
+
+.cell:disabled {
+  cursor: default;
+}
+
+/* Symboles */
+.cell.x {
+  color: #4a9eff;
+}
+
+.cell.o {
+  color: #ff5252;
+}
+
+/* Animation à la pose d'un symbole */
+@keyframes place {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.cell.placed {
+  animation: place 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Boutons */
+button:not(.cell) {
+  padding: 0.65rem 1.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+#btn-find {
+  background: #4a9eff;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}
+
+#btn-find:hover {
+  background: #6ab4ff;
+  transform: translateY(-1px);
+}
+
+#btn-find:active {
+  transform: translateY(0);
+}
+
+#btn-find:disabled {
+  background: #3a3a5c;
+  color: #6a6a8a;
+  cursor: default;
+  transform: none;
+}
+
+#btn-replay {
+  background: #2a2a4a;
+  color: #a0a0c0;
+  border: 2px solid #3a3a5c;
+}
+
+#btn-replay:hover {
+  background: #3a3a6a;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
