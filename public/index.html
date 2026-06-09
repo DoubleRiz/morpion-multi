@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Morpion multijoueur</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f0f0f0;
+    }
+    #status {
+      font-size: 1.5rem;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    #status.connected { color: green; }
+    #status.disconnected { color: red; }
+  </style>
+</head>
+<body>
+  <div id="status" class="disconnected">Déconnecté</div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const statusEl = document.getElementById('status');
+
+    socket.on('connect', () => {
+      statusEl.textContent = 'Connecté';
+      statusEl.className = 'connected';
+    });
+
+    socket.on('disconnect', () => {
+      statusEl.textContent = 'Déconnecté';
+      statusEl.className = 'disconnected';
+    });
+  </script>
+</body>
+</html>
