@@ -6,8 +6,16 @@ const activeRooms = new Map();   // roomId -> { game, players: { X: socket, O: s
 const socketRooms = new Map();   // socketId -> roomId
 
 function addToQueue(socket, io) {
+    // Empêche un double-enregistrement et la jonction d'un joueur déjà en partie
+    if (queue.includes(socket) || socketRooms.has(socket.id)) return;
+
     if (queue.length > 0) {
         const opponent = queue.shift();
+
+        // L'adversaire peut s'être déconnecté entre-temps
+        if (!opponent.connected) {
+            return addToQueue(socket, io);
+        }
 
         const roomId = uuidv4();
         const game = new TicTacToeGame();
@@ -48,16 +56,17 @@ function handleDisconnect(socket, io) {
 
     const room = activeRooms.get(roomId);
     if (room) {
-        // Prévient l'adversaire
-        for (const [, player] of Object.entries(room.players)) {
+        // Prévient l'adversaire et nettoie TOUTES les entrées socketRooms de la room
+        for (const player of Object.values(room.players)) {
             if (player.id !== socket.id) {
                 player.emit('opponent-left');
             }
+            socketRooms.delete(player.id);
         }
         activeRooms.delete(roomId);
+    } else {
+        socketRooms.delete(socket.id);
     }
-
-    socketRooms.delete(socket.id);
 }
 
 module.exports = { addToQueue, removeFromQueue, handleDisconnect, activeRooms, socketRooms };

@@ -85,12 +85,12 @@ socket.on('game-start', ({ symbol, roomId: id }) => {
     setBoardActive(myTurn);
 });
 
-socket.on('move-made', ({ index, symbol, board }) => {
-    cells[index].textContent = symbol;
-    // Désactive la case jouée même si c'est notre tour après
-    cells[index].disabled = true;
+socket.on('move-made', ({ symbol, board }) => {
+    // Resynchronise depuis le board autoritaire du serveur
+    cells.forEach((cell, i) => {
+        cell.textContent = board[i] || '';
+    });
 
-    // Détermine à qui c'est le tour pour le prochain coup
     const nextTurn = symbol === 'X' ? 'O' : 'X';
     myTurn = nextTurn === mySymbol;
     statusEl.textContent = myTurn ? 'À vous de jouer !' : "Au tour de l'adversaire";
@@ -122,5 +122,6 @@ socket.on('opponent-left', () => {
     gameOver = true;
     setBoardActive(false);
     statusEl.textContent = 'Adversaire déconnecté.';
+    btnFind.disabled = false;
     btnReplay.style.display = 'inline-block';
 });
